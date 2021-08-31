@@ -46,6 +46,27 @@ class MyHomePage extends StatelessWidget {
             child: Container(width: double.infinity, child: Text('chart')),
             elevation: 50,
           ),
+          Card(
+            child: Container(
+              margin: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Title'),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Amount'),
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text('Add Transaction'),
+                      ))
+                ],
+              ),
+            ),
+          ),
           Column(
             children: transaction.map((value) {
               return Card(
@@ -80,7 +101,7 @@ class MyHomePage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          DateFormat('yyyy/mm/dd').format(value.date),
+                          DateFormat.yMMMEd().format(value.date),
                           style: TextStyle(color: Colors.grey),
                         ),
                       ],
