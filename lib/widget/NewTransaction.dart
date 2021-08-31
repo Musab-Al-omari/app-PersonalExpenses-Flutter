@@ -8,6 +8,19 @@ class NewTransaction extends StatelessWidget {
   NewTransaction(this.addHandler);
   final myTitleControler = TextEditingController();
   final myAmountControler = TextEditingController();
+  void handleSubmit() {
+    String title = myTitleControler.text;
+
+    double amount = myAmountControler.text.isEmpty
+        ? 0
+        : double.parse(myAmountControler.text);
+
+    if (title.isEmpty || amount <= 0) {
+      return;
+    }
+
+    addHandler(title, amount);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +32,20 @@ class NewTransaction extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: 'Title'),
               // onChanged: (value) => myTitle = value,
+              onSubmitted: (_) => handleSubmit,
               controller: myTitleControler,
             ),
             TextField(
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(labelText: 'Amount'),
+              onSubmitted: (_) => handleSubmit,
               // onChanged: (value) => myAmount = value,
               controller: myAmountControler,
             ),
             Container(
                 margin: EdgeInsets.only(top: 10),
                 child: TextButton(
-                  onPressed: () {
-                    addHandler(myTitleControler.text,
-                        double.parse(myAmountControler.text));
-                  },
+                  onPressed: handleSubmit,
                   child: Text('Add Transaction'),
                 ))
           ],

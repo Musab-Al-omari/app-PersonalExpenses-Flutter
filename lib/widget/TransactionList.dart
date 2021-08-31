@@ -18,13 +18,16 @@ class TransactionList extends StatelessWidget {
               children: [
                 Container(
                   alignment: Alignment.center,
-                  child: Text(
-                    '\$${value.amount.toString()}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    child: Text(
+                      '\$${value.amount.toStringAsFixed(2)}',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   margin: EdgeInsets.all(10),
-                  width: 60,
-                  height: 60,
+                  width: 80,
+                  height: 80,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.cyanAccent, width: 3),
                     shape: BoxShape.circle,
