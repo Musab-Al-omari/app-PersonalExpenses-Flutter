@@ -9,55 +9,78 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 350,
+      height: double.maxFinite,
       child: SingleChildScrollView(
-        child: Column(
-          children: transaction.map((value) {
-            return Card(
-                child: Row(
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    child: Text(
-                      '\$${value.amount.toStringAsFixed(2)}',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+        child: transaction.isEmpty
+            ? Column(
+                children: [
+                  SizedBox(
+                    height: 60,
+                  ),
+                  Text(
+                    'There are no Transaction untill now ',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(
+                    height: 60,
+                  ),
+                  Container(
+                    height: 500,
+                    child: Image.asset(
+                      'assets/images/0_BaQI8CF2ln_KFOkL.png',
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                  margin: EdgeInsets.all(10),
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.cyanAccent, width: 3),
-                    shape: BoxShape.circle,
-                    color: Colors.cyan.shade200,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(25),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  )
+                ],
+              )
+            : Column(children: [
+                ...transaction.map((value) {
+                  return Card(
+                      child: Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: 10, top: 5),
-                        child: Text(
-                          value.title,
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                        alignment: Alignment.center,
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            '\$${value.amount.toStringAsFixed(2)}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        margin: EdgeInsets.all(10),
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Colors.cyanAccent, width: 3),
+                          shape: BoxShape.circle,
+                          color: Colors.cyan.shade200,
                         ),
                       ),
-                      Text(
-                        DateFormat.yMMMEd().format(value.date),
-                        style: TextStyle(color: Colors.grey),
-                      ),
+                      Container(
+                        margin: EdgeInsets.all(25),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10, top: 5),
+                              child: Text(
+                                value.title,
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Text(
+                              DateFormat.yMMMEd().format(value.date),
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
-                  ),
-                )
-              ],
-            ));
-          }).toList(),
-        ),
+                  ));
+                }).toList(),
+              ]),
       ),
     );
   }

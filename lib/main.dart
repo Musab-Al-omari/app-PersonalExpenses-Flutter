@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './widget/Chart.dart';
 import './widget/NewTransaction.dart';
 import './widget/TransactionList.dart';
 import '../models/transaction.dart';
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'flutter app',
       home: MyHomePage(),
+      theme: ThemeData(backgroundColor: Colors.white),
     );
   }
 }
@@ -24,19 +26,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransaction = [
-    Transaction(
-      id: 't1',
-      title: 'shose',
-      amount: 3.5,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'body',
-      amount: 5.5,
-      date: DateTime.now(),
-    )
+    // Transaction(
+    //   id: 't1',
+    //   title: 'shose',
+    //   amount: 3.5,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   title: 'body',
+    //   amount: 5.5,
+    //   date: DateTime.now(),
+    // )
   ];
+
+  List<Transaction> get _resentTransaction {
+    return _userTransaction.where((tx) {
+      return tx.date.isAfter(tx.date.subtract(
+        Duration(days: 7),
+      ));
+    }).toList();
+  }
 
   void _addNewTransaction(String titleText, double amountText) {
     final NewTran = Transaction(
@@ -61,11 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('my app'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => _popTransaction(context),
             icon: Icon(Icons.add),
             iconSize: 35,
           ),
@@ -73,17 +84,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
-          Card(
-            color: Colors.blue,
-            child: Container(width: double.infinity, child: Text('chart')),
-            elevation: 50,
-          ),
+          Chart(_resentTransaction),
           TransactionList(_userTransaction)
         ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => _popTransaction(context),
         hoverColor: Colors.blueGrey,
         child: Icon(Icons.add),
       ),
