@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -12,8 +14,8 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final myTitleControler = TextEditingController();
-
   final myAmountControler = TextEditingController();
+  var _selectedDate;
 
   void handleSubmit() {
     String title = myTitleControler.text;
@@ -21,12 +23,28 @@ class _NewTransactionState extends State<NewTransaction> {
         ? 0
         : double.parse(myAmountControler.text);
 
-    if (title.isEmpty || amount <= 0) {
+    if (title.isEmpty || amount <= 0 || _selectedDate == null) {
       return;
     }
 
-    widget.addHandler(title, amount);
+    widget.addHandler(title, amount, _selectedDate);
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2019),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -50,8 +68,39 @@ class _NewTransactionState extends State<NewTransaction> {
               controller: myAmountControler,
             ),
             Container(
+              height: 70,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    _selectedDate == null
+                        ? 'pick date'
+                        : '${DateFormat.yMd().format(_selectedDate)}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Container(
+                    child: TextButton(
+                      style: TextButton.styleFrom(primary: Colors.blueAccent),
+                      onPressed: _presentDatePicker,
+                      child: Text(
+                        'Choose data',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
                 margin: EdgeInsets.only(top: 10),
-                child: TextButton(
+                child: ElevatedButton(
+                  style: TextButton.styleFrom(primary: Colors.black),
                   onPressed: handleSubmit,
                   child: Text('Add Transaction'),
                 ))

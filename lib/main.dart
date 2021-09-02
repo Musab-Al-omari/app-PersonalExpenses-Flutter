@@ -27,16 +27,34 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransaction = [
     Transaction(
-      id: 't1',
-      title: 'shose',
+      id: 't5',
+      title: 'gift',
       amount: 3.5,
-      date: DateTime.now(),
+      date: DateTime.now().subtract(Duration(days: 6)),
     ),
     Transaction(
-      id: 't2',
-      title: 'body',
+      id: 't10',
+      title: 'shawrma',
+      amount: 4.5,
+      date: DateTime.now().subtract(Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'burger',
       amount: 5.5,
-      date: DateTime.now(),
+      date: DateTime.now().subtract(Duration(days: 5)),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'shose',
+      amount: 6.5,
+      date: DateTime.now().subtract(Duration(days: 2)),
+    ),
+    Transaction(
+      id: 't15',
+      title: 'hat',
+      amount: 50,
+      date: DateTime.now().subtract(Duration(days: 1)),
     )
   ];
 
@@ -48,12 +66,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String titleText, double amountText) {
+  void _addNewTransaction(
+      String titleText, double amountText, DateTime myDate) {
     final NewTran = Transaction(
         id: DateTime.now().toString(),
         title: titleText,
         amount: amountText,
-        date: DateTime.now());
+        date: myDate);
 
     setState(() {
       _userTransaction.add(NewTran);
@@ -68,8 +87,15 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-  @override
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransaction.removeWhere((tx) => tx.id == id);
+    });
+  }
+
   Widget build(BuildContext context) {
+    print(DateTime.now());
+    print(DateTime.now());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -85,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
           Chart(_resentTransaction),
-          TransactionList(_userTransaction)
+          TransactionList(_userTransaction, _deleteTransaction)
         ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
